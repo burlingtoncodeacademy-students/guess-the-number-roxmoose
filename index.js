@@ -28,11 +28,43 @@ async function start() {
     return Math.floor(Math.random() * range) + lowest;
   }
 
-  let response = await ask("Is your number " + randomNum() + "? yes or no? => ");
+  let guess = randomNum();
+
+  let response = await ask("Is your number " + guess + "? yes or no? => ");
+
+  // Story 2: Computer guessed correctly
   if (response === "yes") {
-    console.log("Wow there was a 1 in 100 chance of that. Cool!")} else {
-      console.log("Well there was only a 1 in 100 chance of that, so that makes sense. Anyways, coffee?")
+    console.log("Wow there was a 1 in 100 chance of that. Let's go eat cake!");
+  }
+  
+  // Story 3: Computer guessed wrong
+  else {
+    let newResponse = await ask(
+      "Well there was only a 1 in 100 chance of me guessing correctly, so that makes sense. Let's try again! Is your number higher (key in 'H') or lower (key in 'L')? => "
+    );
+
+    // Story 4: "Modify Your Guess Range"
+
+    function guessHigher() {
+      return Math.floor((highest + guess) / 2);
     }
+
+    function guessLower() {
+      return Math.floor((guess + lowest) / 2);
+    }
+
+    if (newResponse === "H") {
+      console.log(guess, highest) // just checking to make sure it's using the correct range
+      console.log(
+        "Higher you say? Ok. Is your number " + guessHigher() + "? => "
+      );
+    } else {
+      console.log(lowest, guess) // just checking to make sure it's using the correct range
+      console.log(
+        "Lower you say? Ok. Is your number " + guessLower() + "? => "
+      );
+    }
+  }
 
   process.exit();
 }

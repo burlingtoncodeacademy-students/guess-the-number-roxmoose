@@ -14,9 +14,9 @@ async function start() {
     "Let's play a game where you (human) make up a number between 1 and 100, and I (computer) try to guess it."
   );
   let secretNumber = await ask(
-    "What is your secret number?\nI won't peek, I promise...\n"
+    "What is your secret number? (I won't peek, I promise...)\n"
   );
-  console.log("You entered: " + secretNumber);
+  console.log("YOUR SECRET NUMBER: " + secretNumber);
 
   // Story 1: "Pick a Number, Any Number"
 
@@ -36,34 +36,46 @@ async function start() {
   if (response === "yes") {
     console.log("Wow there was a 1 in 100 chance of that. Let's go eat cake!");
   }
-  
+
   // Story 3: Computer guessed wrong
   else {
-    let newResponse = await ask(
-      "Well there was only a 1 in 100 chance of me guessing correctly, so that makes sense. Let's try again! Is your number higher (key in 'H') or lower (key in 'L')? => "
+    response = await ask(
+      "I'll try again! Is your number higher (key in 'H') or lower (key in 'L')? => "
     );
 
-    // Story 4: "Modify Your Guess Range"
+    // Stories 4 and 5: "Modify Your Guess Range" and "Make it Smarter"
 
     function guessHigher() {
-      return Math.floor((highest + guess) / 2);
+      guess = Math.floor((highest + guess) / 2);
+      return guess;
     }
 
     function guessLower() {
-      return Math.floor((guess + lowest) / 2);
+      guess = Math.floor((guess + lowest) / 2);
+      return guess;
     }
 
-    if (newResponse === "H") {
-      console.log(guess, highest) // just checking to make sure it's using the correct range
-      console.log(
-        "Higher you say? Ok. Is your number " + guessHigher() + "? => "
-      );
-    } else {
-      console.log(lowest, guess) // just checking to make sure it's using the correct range
-      console.log(
-        "Lower you say? Ok. Is your number " + guessLower() + "? => "
-      );
+    while (response !== "yes") {
+      if (response === "H") {
+        // console.log(guess, highest) // just checking to make sure it's using the correct range
+        lowest = guess;
+        response = await ask(
+          "Higher you say? Ok. Is your number " +
+            guessHigher() +
+            "? \nKey in 'yes' if it is, or 'H' or 'L' for me to guess higher or lower! => "
+        );
+      } else {
+        // console.log(lowest, guess) // just checking to make sure it's using the correct range
+        highest = guess;
+        response = await ask(
+          "Lower you say? Ok. Is your number " +
+            guessLower() +
+            "? \nKey in 'yes' if it is, or 'H' or 'L' for me to guess higher or lower! => "
+        );
+      }
     }
+    console.log("Yay!");
+    process.exit();
   }
 
   process.exit();

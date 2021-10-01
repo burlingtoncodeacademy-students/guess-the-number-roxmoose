@@ -11,17 +11,19 @@ start();
 
 async function start() {
   console.log(
-    "Let's play a game where you (human) make up a number between 1 and 100, and I (computer) try to guess it."
+    "Let's play a game where you (human) make up a number, and I (computer) try to guess it. The lowest possible number is 1."
   );
-  let secretNumber = await ask(
-    "What is your secret number? (I won't peek, I promise...)\n"
-  );
+
+  let lowest = 1;
+  // Story 6: "Extend the Guess Range"
+  let highest = await ask(
+    "Please enter a number that we'll use as the highest possible guess => ");
+    highest = parseInt(highest); 
+
+  let secretNumber = await ask("Ok, now enter a secret numer between 1 and " + highest + ". (I promise I won't look.)\n");
   console.log("YOUR SECRET NUMBER: " + secretNumber);
 
   // Story 1: "Pick a Number, Any Number"
-
-  let lowest = 1;
-  let highest = 100;
 
   function randomNum() {
     let range = highest - lowest + 1;

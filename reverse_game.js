@@ -7,17 +7,17 @@ function ask(questionText) {
     });
 }
 
-start();
+reverse();
 
-async function start() {
+async function reverse() {
     console.log("Let's play a game where I (computer) think of a random number and you (human) try to guess it. The lowest possible number is 1. ")
 
     let lowest = 1;
     let highest = await ask("Please enter a number that we'll use as the highest possible number => ")
     highest = parseInt(highest)
 
-    let secretNumber = Math.floor(Math.random() * (highest - lowest)) + lowest
-    console.log(secretNumber) // just checking; remove later
+    let secretNumber = Math.round(Math.random() * (highest - lowest)) + lowest
+    // console.log(secretNumber) // just checking
 
     console.log("Ok. I'm thinking of a number between 1 and " + highest + ".")
 

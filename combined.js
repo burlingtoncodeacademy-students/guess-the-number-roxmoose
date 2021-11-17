@@ -14,12 +14,16 @@ function ask(questionText) {
 combined()
 
 async function combined() {
-    console.log("Hello! We have two game options: Either A) You think of a number and the computer tries to guess it, or B) The computer thinks of a number and you try to guess it. Which would you like to play?")
+    console.log("\nHello! We have two game options: \nA) You (human) make up a number and I (computer) try to guess it, or \nB) I (computer) make up a number and you (human) try to guess it. \nWhich would you like to play?")
     let game = await ask("Please input A or B => ")
-    if (game === "A") {
+    if (game === "A" || game === "a") {
+      console.log("\nYou've chosen option A.\n")
         start()
-    } else {
+    } else if (game==="B" || game === "b") {
+      console.log("\nYou've chosen option B.\n")
         reverse()
+    } else {
+      console.log("Please choose A or B.")
     }
 
 

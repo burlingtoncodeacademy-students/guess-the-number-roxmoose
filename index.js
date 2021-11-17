@@ -65,28 +65,35 @@ async function start() {
 
     while (response !== "yes" && response !== "Yes" && response !== "YES") {
       if (response === "H" || response === "h") {
-        lowest = guess; // if human says to go higher, their most recent guess is the new lowest possible number
+        lowest = guess + 1; // if human says to go higher, the computer's most recent guess plus 1 is the new lowest possible number
 
-        response = await ask(
-          "Higher you say? Ok. Is your number " +
-            guessHigher() +
-            "? \nKey in 'yes' if it is, or 'h' or 'l' for me to guess higher or lower! => "
-
-        )
-        // Cheat Detector attempt - but doesn't work! This never shows up.
-        if (highest === lowest) {
-          console.log("I got it this time.")
+        if (highest < lowest) {
+          // If human's answer causes highest possible number to be lower than lowest possible number, we know they're cheating, and we kick them out.
+          console.log(`YOU'RE CHEATING. BYE`);
+          process.exit();
+        } else {
+          response = await ask(
+            "Higher you say? Ok. Is your number " +
+              guessHigher() +
+              "? \nKey in 'yes' if it is, or 'h' or 'l' for me to guess higher or lower! => "
+          );
         }
-        ;
 
         calledTimes = calledTimes += 1; // For ICEBOX 2: How many tries
       } else {
-        highest = guess; // if human says to go lower, their most recent guess is the new highest possible number
-        response = await ask(
-          "Lower you say? Ok. Is your number " +
-            guessLower() +
-            "? \nKey in 'yes' if it is, or 'h' or 'l' for me to guess higher or lower! => "
-        );
+        highest = guess - 1; // if human says to go lower, the computer's most recent guess minus 1 is the new highest possible number
+
+        if (highest < lowest) {
+          // If human's answer causes highest possible number to be lower than lowest possible number, we know they're cheating, and we kick them out.
+          console.log(`YOU'RE CHEATING. BYE`);
+          process.exit();
+        } else {
+          response = await ask(
+            "Lower you say? Ok. Is your number " +
+              guessLower() +
+              "? \nKey in 'yes' if it is, or 'h' or 'l' for me to guess higher or lower! => "
+          );
+        }
 
         calledTimes = calledTimes += 1; // For ICEBOX 2: How many tries
       }
@@ -101,11 +108,10 @@ async function start() {
       "Would you like to play again? Key in 'yes' or 'no' => "
     );
     if (playAgain === "yes") {
-      start(); 
+      start();
     } else {
       console.log("Thanks for playing! Byeeee");
       process.exit();
     }
   }
-
 }
